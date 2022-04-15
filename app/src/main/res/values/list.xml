@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="subjects">
+        <item>Математика</item>
+        <item>Русский</item>
+        <item>Информатика</item>
+        <item>Физика</item>
+        <item>Химия</item>
+        <item>Биология</item>
+        <item>Обществознание</item>
+        <item>История</item>
+        <item>Английский язык</item>
+        <item>Немецкий язык</item>
+        <item>Китайский язык</item>
+        <item>Музыка</item>
+        <item>Рисование</item>
+    </string-array>
+    <string-array name="cities">
+        <item>Москва</item>
+        <item>Санкт-Петербург</item>
+        <item>Новосибирск</item>
+        <item>Екатеринбург</item>
+        <item>Казань</item>
+        <item>Нижний Новгород</item>
+        <item>Челябинск</item>
+        <item>Самара</item>
+        <item>Омск</item>
+        <item>Ростов-на-Дону</item>
+        <item>Уфа</item>
+        <item>Красноярск</item>
+        <item>Воронеж</item>
+        <item>Пермь</item>
+        <item>Волгоград</item>
+        <item>Краснодар</item>
+        <item>Саратов</item>
+        <item>Тюмень</item>
+        <item>Тольятти</item>
+        <item>Ижевск</item>
+        <item>Нягань</item>
+        <item>Магнитогорск</item>
+        <item>Череповец</item>
+    </string-array>
+</resources>

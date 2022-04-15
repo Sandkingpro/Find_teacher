@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="progressbar_style" parent="Widget.AppCompat.ProgressBar">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">20dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="colorAccent">#FF6C4A</item>
+    </style>
+    <style name="CustomChipChoice" parent="@style/Widget.MaterialComponents.Chip.Choice">
+        <item name="chipBackgroundColor">@color/bg_chip</item>
+        <item name="android:textColor">@color/text_bg_chip</item>
+    </style>
+    <style name="ColorRatingBar" parent="@style/Widget.AppCompat.RatingBar.Small">
+        <item name="colorControlNormal">@color/gray</item>
+        <item name="colorControlActivated">#FF6C4A</item>
+    </style>
+</resources>

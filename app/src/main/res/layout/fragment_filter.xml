@@ -1,0 +1,560 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/champagne"
+    tools:context=".FilterFragment">
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nestedScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/subject_filter"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="50dp"
+                android:layout_marginTop="25dp"
+                android:fontFamily="@font/rubik_medium"
+                android:text="Выберите предмет"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/mordar_board"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="19dp"
+                android:src="@drawable/ic_mordar_board"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <View
+                android:id="@+id/view"
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:background="@color/black"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/mordar_board" />
+
+            <TextView
+                android:id="@+id/location_filter"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="50dp"
+                android:layout_marginTop="32dp"
+                android:fontFamily="@font/rubik_medium"
+                android:text="Выберите город"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/view" />
+
+            <ImageView
+                android:id="@+id/location_icon"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="25dp"
+                android:src="@drawable/ic_map_location"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/mordar_board" />
+
+            <View
+                android:id="@+id/view2"
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:background="@color/black"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/location_icon" />
+
+            <TextView
+                android:id="@+id/textView12"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="27dp"
+                android:fontFamily="@font/rubik_medium"
+                android:text="Формат занятий"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/view2" />
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chipGroup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="8dp"
+                android:clickable="true"
+                android:focusable="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView12"
+                app:selectionRequired="true"
+                app:singleLine="false"
+                app:singleSelection="true">
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip4"
+                    style="@style/CustomChipChoice"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:checkable="true"
+                    android:fontFamily="@font/rubik_regular"
+                    android:text="Очно"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                    android:textSize="16sp"
+                    app:checkedIconEnabled="false"
+                    app:chipCornerRadius="0dp" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip5"
+                    style="@style/CustomChipChoice"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:checkable="true"
+                    android:fontFamily="@font/rubik_regular"
+                    android:text="Дистанционно"
+                    android:textSize="16sp"
+                    app:checkedIconEnabled="false"
+                    app:chipCornerRadius="0dp" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip6"
+                    style="@style/CustomChipChoice"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:checkable="true"
+                    android:checked="true"
+                    android:fontFamily="@font/rubik_regular"
+                    android:text="Любой"
+                    android:textSize="16sp"
+                    app:checkedIconEnabled="false"
+                    app:chipCornerRadius="0dp" />
+
+            </com.google.android.material.chip.ChipGroup>
+
+            <com.crystal.crystalrangeseekbar.widgets.BubbleThumbRangeSeekbar
+                android:id="@+id/rangeSeekbar5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="15dp"
+                app:bar_color="@color/black"
+                app:bar_highlight_color="@color/gray"
+                app:corner_radius="10"
+                app:data_type="_integer"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/start_price"
+                app:left_thumb_color="@color/black"
+                app:max_value="5000"
+                app:min_value="0"
+                app:right_thumb_color="@color/black"
+                app:steps="100" />
+
+            <TextView
+                android:id="@+id/textView8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="27dp"
+                android:fontFamily="@font/rubik_medium"
+                android:text="Цена"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/chipGroup" />
+
+            <EditText
+                android:id="@+id/start_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/custom_edit"
+                android:ems="10"
+                android:fontFamily="@font/rubik_regular"
+                android:inputType="numberSigned|textPersonName"
+                android:minHeight="40dp"
+                android:padding="5dp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/black"
+                android:textCursorDrawable="@drawable/cursor_drawable"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toStartOf="@+id/end_price"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView8" />
+
+            <EditText
+                android:id="@+id/end_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/custom_edit"
+                android:ems="10"
+                android:fontFamily="@font/rubik_regular"
+                android:inputType="numberSigned|textPersonName"
+                android:minHeight="40dp"
+                android:padding="5dp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/black"
+                android:textCursorDrawable="@drawable/cursor_drawable"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView8" />
+
+            <TextView
+                android:id="@+id/textView9"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="15dp"
+                android:fontFamily="@font/rubik_regular"
+                android:text="руб."
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="@+id/start_price"
+                app:layout_constraintTop_toTopOf="@+id/start_price" />
+
+            <TextView
+                android:id="@+id/textView11"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="15dp"
+                android:fontFamily="@font/rubik_regular"
+                android:text="руб."
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="@+id/end_price"
+                app:layout_constraintTop_toTopOf="@+id/end_price" />
+
+            <TextView
+                android:id="@+id/textView5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="27dp"
+                android:fontFamily="@font/rubik_medium"
+                android:text="Категории учеников"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/rangeSeekbar5" />
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chipGroup2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView5">
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip11"
+                    style="@style/CustomChipChoice"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:checkable="true"
+                    android:fontFamily="@font/rubik_regular"
+                    android:text="Студенты"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                    android:textSize="16sp"
+                    app:checkedIconEnabled="false"
+                    app:chipCornerRadius="0dp" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip10"
+                    style="@style/CustomChipChoice"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:checkable="true"
+                    android:fontFamily="@font/rubik_regular"
+                    android:text="Старшие классы"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                    android:textSize="16sp"
+                    app:checkedIconEnabled="false"
+                    app:chipCornerRadius="0dp" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip9"
+                    style="@style/CustomChipChoice"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:checkable="true"
+                    android:fontFamily="@font/rubik_regular"
+                    android:text="Средние классы"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                    android:textSize="16sp"
+                    app:checkedIconEnabled="false"
+                    app:chipCornerRadius="0dp" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip8"
+                    style="@style/CustomChipChoice"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:checkable="true"
+                    android:fontFamily="@font/rubik_regular"
+                    android:text="Начальные классы"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                    android:textSize="16sp"
+                    app:checkedIconEnabled="false"
+                    app:chipCornerRadius="0dp" />
+            </com.google.android.material.chip.ChipGroup>
+
+            <TextView
+                android:id="@+id/textView13"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="27dp"
+                android:fontFamily="@font/rubik_medium"
+                android:text="Статус преподавателя"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/chipGroup2" />
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chipGroup3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView13">
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip15"
+                    style="@style/CustomChipChoice"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:checkable="true"
+                    android:fontFamily="@font/rubik_regular"
+                    android:text="Частный преподаватель"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                    android:textSize="16sp"
+                    app:checkedIconEnabled="false"
+                    app:chipCornerRadius="0dp" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip14"
+                    style="@style/CustomChipChoice"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:checkable="true"
+                    android:fontFamily="@font/rubik_regular"
+                    android:text="Школьный преподаватель"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                    android:textSize="16sp"
+                    app:checkedIconEnabled="false"
+                    app:chipCornerRadius="0dp" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip13"
+                    style="@style/CustomChipChoice"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:checkable="true"
+                    android:fontFamily="@font/rubik_regular"
+                    android:text="Преподаватель вуза"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                    android:textSize="16sp"
+                    app:checkedIconEnabled="false"
+                    app:chipCornerRadius="0dp" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip12"
+                    style="@style/CustomChipChoice"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:checkable="true"
+                    android:fontFamily="@font/rubik_regular"
+                    android:text="Студент"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                    android:textSize="16sp"
+                    app:checkedIconEnabled="false"
+                    app:chipCornerRadius="0dp" />
+            </com.google.android.material.chip.ChipGroup>
+
+            <TextView
+                android:id="@+id/textView14"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:fontFamily="@font/rubik_medium"
+                android:text="Дополнительно"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/chipGroup3" />
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chipGroup4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView14">
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip17"
+                    style="@style/CustomChipChoice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checkable="true"
+                    android:fontFamily="@font/rubik_regular"
+                    android:text="ОГЭ"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                    android:textSize="16sp"
+                    app:checkedIconEnabled="false"
+                    app:chipCornerRadius="0dp" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip16"
+                    style="@style/CustomChipChoice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checkable="true"
+                    android:fontFamily="@font/rubik_regular"
+                    android:text="ЕГЭ"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                    android:textSize="16sp"
+                    app:checkedIconEnabled="false"
+                    app:chipCornerRadius="0dp" />
+            </com.google.android.material.chip.ChipGroup>
+
+            <TextView
+                android:id="@+id/textView15"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="27dp"
+                android:fontFamily="@font/rubik_medium"
+                android:text="Пол"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/chipGroup4" />
+
+            <com.google.android.material.chip.ChipGroup
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="50dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView15"
+                app:selectionRequired="true"
+                app:singleSelection="true">
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip20"
+                    style="@style/CustomChipChoice"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:checkable="true"
+                    android:fontFamily="@font/rubik_regular"
+                    android:text="Мужской"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                    android:textSize="16sp"
+                    app:checkedIconEnabled="false"
+                    app:chipCornerRadius="0dp" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip19"
+                    style="@style/CustomChipChoice"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:checkable="true"
+                    android:fontFamily="@font/rubik_regular"
+                    android:text="Женский"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                    android:textSize="16sp"
+                    app:checkedIconEnabled="false"
+                    app:chipCornerRadius="0dp" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip18"
+                    style="@style/CustomChipChoice"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:checkable="true"
+                    android:checked="true"
+                    android:fontFamily="@font/rubik_regular"
+                    android:text="Любой"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                    android:textSize="16sp"
+                    app:checkedIconEnabled="false"
+                    app:chipCornerRadius="0dp" />
+            </com.google.android.material.chip.ChipGroup>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <Button
+        android:id="@+id/ok_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:backgroundTint="@color/dark_blue"
+        android:fontFamily="@font/rubik_medium"
+        android:text="Применить"
+        android:textAllCaps="false"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <FrameLayout
+        android:id="@+id/select_item_frame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+    </FrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
