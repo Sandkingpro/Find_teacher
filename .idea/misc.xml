@@ -8,9 +8,11 @@
         <entry key="..\:/MyApplication4/app/src/main/res/drawable/cursor_drawable.xml" value="0.13425925925925927" />
         <entry key="..\:/MyApplication4/app/src/main/res/drawable/custom_edit.xml" value="0.13425925925925927" />
         <entry key="..\:/MyApplication4/app/src/main/res/drawable/ic_dashboard_black_24dp.xml" value="0.2101851851851852" />
+        <entry key="..\:/MyApplication4/app/src/main/res/drawable/ic_emojione_open_book.xml" value="0.19074074074074074" />
         <entry key="..\:/MyApplication4/app/src/main/res/drawable/ic_home_black_24dp.xml" value="0.2101851851851852" />
         <entry key="..\:/MyApplication4/app/src/main/res/drawable/ic_icon_filter.xml" value="0.1537037037037037" />
         <entry key="..\:/MyApplication4/app/src/main/res/drawable/ic_launcher_background.xml" value="0.2101851851851852" />
+        <entry key="..\:/MyApplication4/app/src/main/res/drawable/ic_logo.xml" value="0.19074074074074074" />
         <entry key="..\:/MyApplication4/app/src/main/res/drawable/ic_notifications_black_24dp.xml" value="0.2101851851851852" />
         <entry key="..\:/MyApplication4/app/src/main/res/drawable/my_gradient.xml" value="0.2101851851851852" />
         <entry key="..\:/MyApplication4/app/src/main/res/drawable/progress_bar.xml" value="0.19166666666666668" />
@@ -31,6 +33,8 @@
         <entry key="..\:/MyApplication4/app/src/main/res/layout/progress_bar_layout.xml" value="0.2364102564102564" />
         <entry key="..\:/MyApplication4/app/src/main/res/layout/reviews.xml" value="0.2" />
         <entry key="..\:/MyApplication4/app/src/main/res/menu/bottom_nav_menu.xml" value="0.16793893129770993" />
+        <entry key="..\:/MyApplication4/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.19074074074074074" />
+        <entry key="..\:/MyApplication4/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.19074074074074074" />
       </map>
     </option>
   </component>
