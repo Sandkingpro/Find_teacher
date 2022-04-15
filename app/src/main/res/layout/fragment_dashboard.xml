@@ -314,6 +314,7 @@
                     android:layout_gravity="center_horizontal"
                     android:backgroundTint="@color/light_gray"
                     android:maxHeight="40dp"
+                    android:padding="5dp"
                     android:text="показать все"
                     android:textAllCaps="false"
                     android:textColor="@color/gray"
