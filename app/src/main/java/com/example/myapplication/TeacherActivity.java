@@ -22,6 +22,8 @@ import java.util.Objects;
 
 public class TeacherActivity extends AppCompatActivity {
     TextView name;
+    TextView type_education;
+    TextView city;
     ImageView photo;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,8 +42,12 @@ public class TeacherActivity extends AppCompatActivity {
         Type type = new TypeToken<Teacher>(){}.getType();
         Teacher teacher=gson.fromJson(getIntent().getStringExtra("teacher"),type);
         final CollapsingToolbarLayout toolbarLayout=(CollapsingToolbarLayout)findViewById(R.id.collaps);
-        name=(TextView)findViewById(R.id.textView4);
+        name=(TextView)findViewById(R.id.name_teacher);
+        type_education=(TextView)findViewById(R.id.type_education_teacher);
+        city=(TextView)findViewById(R.id.city_teacher);
         name.setText(teacher.getName());
+        type_education.setText(teacher.getWhere_educate());
+        city.setText(teacher.getCity());
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.appBarLayout);
         Toolbar mytoolbar=(Toolbar)findViewById(R.id.toolbar);
@@ -56,6 +62,7 @@ public class TeacherActivity extends AppCompatActivity {
                 }
                 if (scrollRange + verticalOffset == 0) {
                     toolbarLayout.setTitle(teacher.getName());
+                    toolbarLayout.setCollapsedTitleTextColor(Color.WHITE);
                     isShow = true;
                 } else if(isShow) {
                     toolbarLayout.setTitle(" ");//careful there should a space between double quote otherwise it wont work

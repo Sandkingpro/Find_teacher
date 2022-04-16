@@ -33,16 +33,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <ImageView
-                android:id="@+id/imageView3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="85dp"
-                android:layout_marginTop="5dp"
-                android:src="@drawable/star"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/photo_cabinet" />
-
             <Button
                 android:id="@+id/edit_profile"
                 android:layout_width="wrap_content"
@@ -156,28 +146,17 @@
                 app:layout_constraintTop_toBottomOf="@+id/cardView2" />
 
             <TextView
-                android:id="@+id/textView16"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
-                android:fontFamily="@font/rubik_regular"
-                android:text="4.56"
-                android:textColor="@color/black"
-                app:layout_constraintStart_toEndOf="@+id/imageView3"
-                app:layout_constraintTop_toBottomOf="@+id/photo_cabinet" />
-
-            <TextView
                 android:id="@+id/name_cabinet"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="23dp"
                 android:fontFamily="@font/rubik_regular"
                 android:text="Владислав Сальников"
                 android:textColor="@color/black"
                 android:textSize="24sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imageView3" />
+                app:layout_constraintTop_toBottomOf="@+id/ratingBar2" />
 
             <TextView
                 android:id="@+id/about_information_cabinet"
@@ -347,6 +326,17 @@
                 android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/about_information_cabinet" />
+
+            <RatingBar
+                android:id="@+id/ratingBar2"
+                style="@style/ColorRatingBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:rating="4.56"
+                android:theme="@style/ColorRatingBar"
+                app:layout_constraintEnd_toEndOf="@+id/photo_cabinet"
+                app:layout_constraintStart_toStartOf="@+id/photo_cabinet"
+                app:layout_constraintTop_toBottomOf="@+id/photo_cabinet" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>

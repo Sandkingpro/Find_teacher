@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -37,8 +38,10 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.PersonViewHolder>{
         holder.type_education.setText(teachers.get(i).getType_education());
         holder.price.setText(String.valueOf(teachers.get(i).getPrice()));
         holder.subject.setText(teachers.get(i).getSubject());
+        holder.ratingBar.setRating((float) teachers.get(i).getRating());
         Teacher teacher=new Teacher(teachers.get(i).getName(),teachers.get(i).getType_education(),
-                teachers.get(i).getWhere_educate(),teachers.get(i).getSubject(),teachers.get(i).getPrice(),teachers.get(i).getPhoto());
+                teachers.get(i).getWhere_educate(),teachers.get(i).getSubject(),teachers.get(i).getPrice(),teachers.get(i).getPhoto(),
+                teachers.get(i).getCity(),teachers.get(i).getRating());
         Gson gson=new Gson();
         String json=gson.toJson(teacher);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -67,6 +70,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.PersonViewHolder>{
         TextView price;
         TextView subject;
         ImageView photo;
+        RatingBar ratingBar;
         PersonViewHolder(View itemView) {
             super(itemView);
             cv = (CardView)itemView.findViewById(R.id.cv);
@@ -76,6 +80,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.PersonViewHolder>{
             where_educate=(TextView)itemView.findViewById(R.id.where_educate);
             type_education=(TextView)itemView.findViewById(R.id.type_education);
             subject=(TextView) itemView.findViewById(R.id.subject);
+            ratingBar=(RatingBar) itemView.findViewById(R.id.ratingBar_adv);
         }
     }
 

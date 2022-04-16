@@ -69,11 +69,11 @@ public class HomeFragment1 extends Fragment {
 
     private List<Teacher> initializeData(){
         teachers=new ArrayList<>();
-        teachers.add(new Teacher("Владислав Сальников","Формат занятий: очно","Частный преподаватель","Математика",700,R.drawable.vlad_teacher));
-        teachers.add(new Teacher("Владислав Сальников","Формат занятий: очно","Частный преподаватель","Математика",700,R.drawable.vlad_teacher));
-        teachers.add(new Teacher("Владислав Сальников","Формат занятий: очно","Частный преподаватель","Математика",700,R.drawable.vlad_teacher));
-        teachers.add(new Teacher("Владислав Сальников","Формат занятий: очно","Частный преподаватель","Математика",700,R.drawable.vlad_teacher));
-        teachers.add(new Teacher("Владислав Сальников","Формат занятий: очно","Частный преподаватель","Математика",700,R.drawable.vlad_teacher));
+        teachers.add(new Teacher("Владислав Сальников","Формат занятий: очно","Частный преподаватель","Математика",700,R.drawable.vlad_teacher,"Челябинск",5));
+        teachers.add(new Teacher("Владислав Сальников","Формат занятий: очно","Частный преподаватель","Математика",700,R.drawable.vlad_teacher,"Челябинск",3));
+        teachers.add(new Teacher("Владислав Сальников","Формат занятий: очно","Частный преподаватель","Математика",700,R.drawable.vlad_teacher,"Челябинск",4.3));
+        teachers.add(new Teacher("Владислав Сальников","Формат занятий: очно","Частный преподаватель","Математика",700,R.drawable.vlad_teacher,"Челябинск",4.56));
+        teachers.add(new Teacher("Владислав Сальников","Формат занятий: очно","Частный преподаватель","Математика",700,R.drawable.vlad_teacher,"Челябинск",4));
         return teachers;
     }
     View.OnClickListener filterClickListener=new View.OnClickListener() {

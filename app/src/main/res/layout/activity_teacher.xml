@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/champagne"
     tools:context=".MainActivity">
 
     <!--AppBarLayout helps the toolbar and other components to react on
@@ -15,7 +15,7 @@
         android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+        android:theme="@style/Theme.AppCompat.Light.NoActionBar">
 
         <!-- In CollapsingToolbarLayout sompe important attributes are:
          i)  app:layout_scrollFlags which is used to specify how collapsing
@@ -25,11 +25,11 @@
          ii) app:contentScrim="@color/green" that specifies the color
               of the collapsed toolbar -->
         <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:id="@+id/collaps"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:contentScrim="#FF6C4A"
             app:layout_scrollFlags="scroll|snap|exitUntilCollapsed"
-            android:id="@+id/collaps"
             app:title="">
 
             <!--We are adding the image that we have added earlier
@@ -39,6 +39,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:background="@color/champagne"
                 android:orientation="vertical">
 
                 <de.hdodenhof.circleimageview.CircleImageView
@@ -53,18 +54,38 @@
                     app:layout_collapseParallaxMultiplier="0.7" />
 
                 <TextView
-                    android:id="@+id/textView4"
+                    android:id="@+id/name_teacher"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="5dp"
                     android:fontFamily="@font/rubik_regular"
                     android:padding="2dp"
-                    android:textColor="@color/white"
+                    android:textColor="@color/black"
                     android:textSize="24sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/imageView4" />
+
+                <TextView
+                    android:id="@+id/type_education_teacher"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_margin="10dp"
+                    android:fontFamily="@font/rubik_regular"
+                    android:textColor="@color/gray"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/city_teacher"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="5dp"
+                    android:fontFamily="@font/rubik_regular"
+                    android:textColor="@color/gray"
+                    android:textSize="16sp" />
             </LinearLayout>
 
 
@@ -113,7 +134,6 @@
             android:text="@string/content"
             android:textSize="20sp" />
     </androidx.core.widget.NestedScrollView>
-
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
