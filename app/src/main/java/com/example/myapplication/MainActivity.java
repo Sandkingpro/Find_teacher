@@ -25,6 +25,10 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.myapplication.databinding.ActivityMainBinding;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Objects;
 
@@ -36,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
     Fragment fragment1=new HomeFragment1();
     final Fragment fragment2=new DashboardFragment();
     final FragmentManager fm = getSupportFragmentManager();
+    Fragment active;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,10 +59,12 @@ public class MainActivity extends AppCompatActivity {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
                     fm.beginTransaction().hide(fragment2).show(fragment1).commit();
+                    active=fragment1;
                     return true;
 
                 case R.id.navigation_dashboard:
                     fm.beginTransaction().hide(fragment1).show(fragment2).commit();
+                    active=fragment2;
                     return true;
             }
             return false;
@@ -66,10 +73,7 @@ public class MainActivity extends AppCompatActivity {
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                sharedPreferences = getSharedPreferences(SHARED_PREF_NAME,MODE_PRIVATE);
-                SharedPreferences.Editor editor=sharedPreferences.edit();
-                editor.putBoolean("isLogin",false);
-                editor.apply();
+                FirebaseAuth.getInstance().signOut();
                 startActivity(new Intent(MainActivity.this,AuthActivity.class));
             }
         });
@@ -79,31 +83,45 @@ public class MainActivity extends AppCompatActivity {
     }
     @Override
     public void onBackPressed() {
-        if(fragment1.getParentFragmentManager().findFragmentById(R.id.filter_frame)==null){
-            finishAffinity();
-        }
-        if(Objects.requireNonNull(fragment1.getParentFragmentManager().findFragmentById(R.id.filter_frame))
-                .getParentFragmentManager().findFragmentById(R.id.select_item_frame)!=null){
-            Objects.requireNonNull(fragment1.getParentFragmentManager()
-                    .findFragmentById(R.id.filter_frame)).getParentFragmentManager().beginTransaction().remove(
-                    Objects.requireNonNull(Objects.requireNonNull(
-                            fragment1.getParentFragmentManager().findFragmentById(R.id.filter_frame)).
-                            getParentFragmentManager().findFragmentById(R.id.select_item_frame))
-            ).commit();
-            fragment1.getParentFragmentManager().findFragmentById(R.id.filter_frame).getView()
-                    .findViewById(R.id.ok_button).setVisibility(View.VISIBLE);
-            return;
-        }
-        if(fragment1.getParentFragmentManager().findFragmentById(R.id.filter_frame)!=null){
-            fragment1.getParentFragmentManager().beginTransaction().remove(
-                    Objects.requireNonNull(fragment1.getParentFragmentManager().findFragmentById(R.id.filter_frame)))
-                    .commit();
-            fragment1.getView().findViewById(R.id.filter_button).setVisibility(View.VISIBLE);
+        if(active==fragment1 || active==null){
+            if(fragment1.getParentFragmentManager().findFragmentById(R.id.filter_frame)==null){
+                finishAffinity();
+            }
+            if(Objects.requireNonNull(fragment1.getParentFragmentManager().findFragmentById(R.id.filter_frame))
+                    .getParentFragmentManager().findFragmentById(R.id.select_item_frame)!=null){
+                Objects.requireNonNull(fragment1.getParentFragmentManager()
+                        .findFragmentById(R.id.filter_frame)).getParentFragmentManager().beginTransaction().remove(
+                        Objects.requireNonNull(Objects.requireNonNull(
+                                fragment1.getParentFragmentManager().findFragmentById(R.id.filter_frame)).
+                                getParentFragmentManager().findFragmentById(R.id.select_item_frame))
+                ).commit();
+                fragment1.getParentFragmentManager().findFragmentById(R.id.filter_frame).getView()
+                        .findViewById(R.id.ok_button).setVisibility(View.VISIBLE);
+                return;
+            }
+            if(fragment1.getParentFragmentManager().findFragmentById(R.id.filter_frame)!=null){
+                fragment1.getParentFragmentManager().beginTransaction().remove(
+                        Objects.requireNonNull(fragment1.getParentFragmentManager().findFragmentById(R.id.filter_frame)))
+                        .commit();
+                fragment1.getView().findViewById(R.id.filter_button).setVisibility(View.VISIBLE);
 
+            }
         }
+        if(active==fragment2){
+            if(fragment2.getParentFragmentManager().findFragmentById(R.id.create_ad_fragment)==null){
+                finishAffinity();
+            }
+            if(fragment2.getParentFragmentManager().findFragmentById(R.id.create_ad_fragment)!=null){
+                fragment2.getParentFragmentManager().beginTransaction().remove(Objects.requireNonNull(fragment2.getParentFragmentManager()
+                        .findFragmentById(R.id.create_ad_fragment))).commit();
+                fragment2.getView().findViewById(R.id.make_adv).setEnabled(true);
+            }
+        }
+
 
 
     }
+
 
 
 

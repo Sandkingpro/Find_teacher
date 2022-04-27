@@ -2,6 +2,7 @@ package com.example.myapplication.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,15 +14,25 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.Priority;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.myapplication.R;
-import com.example.myapplication.models.Teacher;
+import com.example.myapplication.models.Advertisement;
 import com.example.myapplication.TeacherActivity;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.google.gson.Gson;
 
 import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class RVAdapter extends RecyclerView.Adapter<RVAdapter.PersonViewHolder>{
     private Context context;
+    private FirebaseAuth mAuth;
     @NonNull
     @Override
     public PersonViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -32,23 +43,39 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.PersonViewHolder>{
 
     @Override
     public void onBindViewHolder(@NonNull PersonViewHolder holder, int i) {
-        holder.name.setText(teachers.get(i).getName());
-        holder.where_educate.setText(teachers.get(i).getWhere_educate());
-        holder.photo.setImageResource(teachers.get(i).getPhoto());
-        holder.type_education.setText(teachers.get(i).getType_education());
-        holder.price.setText(String.valueOf(teachers.get(i).getPrice()));
-        holder.subject.setText(teachers.get(i).getSubject());
-        holder.ratingBar.setRating((float) teachers.get(i).getRating());
-        Teacher teacher=new Teacher(teachers.get(i).getName(),teachers.get(i).getType_education(),
-                teachers.get(i).getWhere_educate(),teachers.get(i).getSubject(),teachers.get(i).getPrice(),teachers.get(i).getPhoto(),
-                teachers.get(i).getCity(),teachers.get(i).getRating());
+        mAuth=FirebaseAuth.getInstance();
+        holder.name.setText(advertisements.get(i).getUser().getName());
+        holder.city.setText(advertisements.get(i).getUser().getCity());
+        if(!advertisements.get(i).getUser().getPhoto().equals("none")){
+            FirebaseStorage storage = FirebaseStorage.getInstance();
+            StorageReference storageRef = storage.getReferenceFromUrl(advertisements.get((i)).getUser().getPhoto());
+            storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                @Override
+                public void onSuccess(Uri uri) {
+                    Glide.with(holder.itemView).load(uri).
+                            thumbnail( 0.5f )
+                            .override( 200, 200 )
+                            .placeholder(R.drawable.ic_avatar)
+                            .diskCacheStrategy( DiskCacheStrategy.ALL )
+                            .fitCenter()
+                            .priority(Priority.IMMEDIATE)
+                            .into(holder.photo);
+                }
+            });
+        }
+        holder.format.setText(advertisements.get(i).getFormat());
+        holder.price.setText(String.valueOf(advertisements.get(i).getPrice()));
+        holder.subject.setText(advertisements.get(i).getSubject());
+        holder.ratingBar.setRating((float) advertisements.get(i).getUser().getRating());
+        Advertisement advertisement =new Advertisement(advertisements.get(i).getUser(),advertisements.get(i).getWhere_educate(),
+                advertisements.get(i).getSubject(),advertisements.get(i).getPrice(),advertisements.get(i).getFormat());
         Gson gson=new Gson();
-        String json=gson.toJson(teacher);
+        String json=gson.toJson(advertisement);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent=new Intent(context, TeacherActivity.class);
-                intent.putExtra("teacher",json);
+                intent.putExtra("advertisement",json);
                 context.startActivity(intent);
             }
         });
@@ -56,7 +83,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.PersonViewHolder>{
 
     @Override
     public int getItemCount() {
-        return teachers.size();
+        return advertisements.size();
     }
     @Override
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {
@@ -65,28 +92,28 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.PersonViewHolder>{
     public static class PersonViewHolder extends RecyclerView.ViewHolder {
         CardView cv;
         TextView name;
-        TextView where_educate;
-        TextView type_education;
+        TextView city;
+        TextView format;
         TextView price;
         TextView subject;
-        ImageView photo;
+        CircleImageView photo;
         RatingBar ratingBar;
         PersonViewHolder(View itemView) {
             super(itemView);
             cv = (CardView)itemView.findViewById(R.id.cv);
             name = (TextView)itemView.findViewById(R.id.name);
             price = (TextView)itemView.findViewById(R.id.price);
-            photo = (ImageView)itemView.findViewById(R.id.photo);
-            where_educate=(TextView)itemView.findViewById(R.id.where_educate);
-            type_education=(TextView)itemView.findViewById(R.id.type_education);
+            photo = (CircleImageView)itemView.findViewById(R.id.photo);
+            city=(TextView)itemView.findViewById(R.id.city);
+            format=(TextView)itemView.findViewById(R.id.format);
             subject=(TextView) itemView.findViewById(R.id.subject);
             ratingBar=(RatingBar) itemView.findViewById(R.id.ratingBar_adv);
         }
     }
 
-    List<Teacher> teachers;
-    public RVAdapter(List<Teacher> teachers,Context context){
-        this.teachers = teachers;
+    List<Advertisement> advertisements;
+    public RVAdapter(List<Advertisement> advertisements, Context context){
+        this.advertisements = advertisements;
         this.context=context;
     }
 }

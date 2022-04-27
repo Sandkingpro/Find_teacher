@@ -12,9 +12,15 @@ import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myapplication.models.Person;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -23,26 +29,35 @@ import java.util.ArrayList;
 
 public class AuthActivity extends AppCompatActivity {
     TextView register;
+    private FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener mAuthListener;
     Button auth;
     EditText login;
     EditText password;
     SharedPreferences sharedPreferences;
     ArrayList<Person> list=new ArrayList<>();
     Gson gson=new Gson();
-    boolean flag;
+    boolean flag=false;
     private static final String SHARED_PREF_NAME ="my_shared_preff";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        sharedPreferences = getSharedPreferences(SHARED_PREF_NAME,MODE_PRIVATE);
-        if(sharedPreferences.getBoolean("isLogin", false)){
-            setContentView(R.layout.progress_bar_layout);
-            startActivity(new Intent(AuthActivity.this,MainActivity.class));
-            return;
-        }
-        else{
-            setContentView(R.layout.activity_auth);
-        }
+        setContentView(R.layout.activity_auth);
+        mAuth = FirebaseAuth.getInstance();
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    // User is signed in
+
+                } else {
+                    // User is signed out
+
+                }
+
+            }
+        };
 
         login=(EditText) findViewById(R.id.login1);
         password=(EditText)findViewById(R.id.password1);
@@ -63,36 +78,35 @@ public class AuthActivity extends AppCompatActivity {
         auth.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                Type type = new TypeToken<ArrayList<Person>>(){}.getType();
-                list=gson.fromJson(sharedPreferences.getString("list",""), type);
-                Person person=new Person(login.getText().toString(),password.getText().toString());
-                if(!list.isEmpty()){
-                    for (Person p:list){
-                        if(p.getLogin().equals(person.getLogin()) && p.getPassword().equals(person.getPassword())){
-                            Toast.makeText(AuthActivity.this, "Успешно", Toast.LENGTH_SHORT).show();
-                            editor.putBoolean("isLogin",true);
-                            editor.apply();
-                            startActivity(new Intent(getBaseContext(), MainActivity.class));
-                            flag=false;
-                            break;
-                        }
-                        else{
-                            flag=true;
-                        }
-                    }
+                if(!login.getText().toString().equals("") && !password.getText().toString().equals("")){
+                    signin(login.getText().toString(),password.getText().toString());
+                    login.setText("");
+                    password.setText("");
+                }
+                else{
+                    Toast.makeText(AuthActivity.this,"Введите логин и пароль для входа",Toast.LENGTH_SHORT).show();
                 }
 
-                if (flag){
-                    Toast.makeText(AuthActivity.this, "Неверный логин или пароль", Toast.LENGTH_SHORT).show();
-                }
-                login.setText("");
-                password.setText("");
 
 
             }
         });
 
+    }
+    public void signin(String email , String password)
+    {
+        mAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if(task.isSuccessful()) {
+                    Toast.makeText(AuthActivity.this, "Aвторизация успешна", Toast.LENGTH_SHORT).show();
+                    Intent intent=new Intent(AuthActivity.this,MainActivity.class);
+                    startActivity(intent);
+                }else
+                    Toast.makeText(AuthActivity.this, "Неверный логин или пароль", Toast.LENGTH_SHORT).show();
+
+            }
+        });
     }
 
     @Override

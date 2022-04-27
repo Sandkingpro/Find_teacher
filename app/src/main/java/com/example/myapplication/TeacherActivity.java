@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.appcompat.widget.Toolbar;
 
-import com.example.myapplication.models.Teacher;
+import com.example.myapplication.models.Advertisement;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -39,15 +39,15 @@ public class TeacherActivity extends AppCompatActivity {
         fab.setColorFilter(Color.argb(255, 255, 255, 255));
         Objects.requireNonNull(getSupportActionBar()).hide();
         Gson gson=new Gson();
-        Type type = new TypeToken<Teacher>(){}.getType();
-        Teacher teacher=gson.fromJson(getIntent().getStringExtra("teacher"),type);
+        Type type = new TypeToken<Advertisement>(){}.getType();
+        Advertisement advertisement =gson.fromJson(getIntent().getStringExtra("advertisement"),type);
         final CollapsingToolbarLayout toolbarLayout=(CollapsingToolbarLayout)findViewById(R.id.collaps);
         name=(TextView)findViewById(R.id.name_teacher);
         type_education=(TextView)findViewById(R.id.type_education_teacher);
         city=(TextView)findViewById(R.id.city_teacher);
-        name.setText(teacher.getName());
-        type_education.setText(teacher.getWhere_educate());
-        city.setText(teacher.getCity());
+        name.setText(advertisement.getUser().getName());
+        type_education.setText(advertisement.getWhere_educate());
+        city.setText(advertisement.getUser().getCity());
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.appBarLayout);
         Toolbar mytoolbar=(Toolbar)findViewById(R.id.toolbar);
@@ -61,7 +61,7 @@ public class TeacherActivity extends AppCompatActivity {
                     scrollRange = appBarLayout.getTotalScrollRange();
                 }
                 if (scrollRange + verticalOffset == 0) {
-                    toolbarLayout.setTitle(teacher.getName());
+                    toolbarLayout.setTitle(advertisement.getUser().getName());
                     toolbarLayout.setCollapsedTitleTextColor(Color.WHITE);
                     isShow = true;
                 } else if(isShow) {

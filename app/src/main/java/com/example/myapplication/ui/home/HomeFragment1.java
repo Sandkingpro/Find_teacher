@@ -1,7 +1,10 @@
 package com.example.myapplication.ui.home;
 
+import static android.content.ContentValues.TAG;
+
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,15 +21,23 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.myapplication.FilterFragment;
 import com.example.myapplication.R;
 import com.example.myapplication.adapters.RVAdapter;
-import com.example.myapplication.models.Teacher;
+import com.example.myapplication.models.Advertisement;
 import com.example.myapplication.databinding.FragmentHomeBinding;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class HomeFragment1 extends Fragment {
-    private List<Teacher> teachers;
+    private List<Advertisement> advertisements;
     private HomeViewModel homeViewModel;
     public View root;
     int currentVisiblePosition = 0;
@@ -51,9 +62,7 @@ public class HomeFragment1 extends Fragment {
         rv = (RecyclerView)root.findViewById(R.id.recycleview);
         RecyclerView.LayoutManager llm = new LinearLayoutManager(getContext());
         rv.setLayoutManager(llm);
-        teachers=initializeData();
-        RVAdapter adapter = new RVAdapter(teachers,getContext());
-        rv.setAdapter(adapter);
+        initializeData();
         floatingActionButton=(FloatingActionButton)root.findViewById(R.id.filter_button);
         floatingActionButton.setColorFilter(Color.argb(255, 255, 255, 255));
         floatingActionButton.setOnClickListener(filterClickListener);
@@ -67,14 +76,37 @@ public class HomeFragment1 extends Fragment {
     }
 
 
-    private List<Teacher> initializeData(){
-        teachers=new ArrayList<>();
-        teachers.add(new Teacher("Владислав Сальников","Формат занятий: очно","Частный преподаватель","Математика",700,R.drawable.vlad_teacher,"Челябинск",5));
-        teachers.add(new Teacher("Владислав Сальников","Формат занятий: очно","Частный преподаватель","Математика",700,R.drawable.vlad_teacher,"Челябинск",3));
-        teachers.add(new Teacher("Владислав Сальников","Формат занятий: очно","Частный преподаватель","Математика",700,R.drawable.vlad_teacher,"Челябинск",4.3));
-        teachers.add(new Teacher("Владислав Сальников","Формат занятий: очно","Частный преподаватель","Математика",700,R.drawable.vlad_teacher,"Челябинск",4.56));
-        teachers.add(new Teacher("Владислав Сальников","Формат занятий: очно","Частный преподаватель","Математика",700,R.drawable.vlad_teacher,"Челябинск",4));
-        return teachers;
+    private void initializeData(){
+        SweetAlertDialog pDialog;
+
+        pDialog = new SweetAlertDialog(requireContext(), SweetAlertDialog.PROGRESS_TYPE);
+        pDialog.getProgressHelper().setBarColor(Color.parseColor("#FF6C4A"));
+        pDialog.setTitleText("Загрузка...");
+        pDialog.setCancelable(false);
+        pDialog.show();
+        advertisements =new ArrayList<>();
+        FirebaseDatabase db = FirebaseDatabase.getInstance("https://find-teacher-a7f26-default-rtdb.firebaseio.com");
+        DatabaseReference ref = db.getReference("advertisements");
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                advertisements.clear();
+                Advertisement advertisement=new Advertisement();
+                for (DataSnapshot childDataSnapshot : dataSnapshot.getChildren()) {
+                    advertisement=childDataSnapshot.getValue(Advertisement.class);
+                    advertisements.add(advertisement);
+                }
+                pDialog.dismiss();
+                pDialog.dismissWithAnimation();
+                RVAdapter adapter = new RVAdapter(advertisements,getContext());
+                rv.setAdapter(adapter);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
+            }
+        });
     }
     View.OnClickListener filterClickListener=new View.OnClickListener() {
         @Override

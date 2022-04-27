@@ -7,24 +7,30 @@
         <entry key="..\:/MyApplication4/app/src/main/res/drawable/bg_overlay.xml" value="0.12129629629629629" />
         <entry key="..\:/MyApplication4/app/src/main/res/drawable/cursor_drawable.xml" value="0.13425925925925927" />
         <entry key="..\:/MyApplication4/app/src/main/res/drawable/custom_edit.xml" value="0.13425925925925927" />
+        <entry key="..\:/MyApplication4/app/src/main/res/drawable/ic_arcticons_phone.xml" value="0.10648148148148148" />
         <entry key="..\:/MyApplication4/app/src/main/res/drawable/ic_dashboard_black_24dp.xml" value="0.2101851851851852" />
         <entry key="..\:/MyApplication4/app/src/main/res/drawable/ic_emojione_open_book.xml" value="0.19074074074074074" />
         <entry key="..\:/MyApplication4/app/src/main/res/drawable/ic_home_black_24dp.xml" value="0.2101851851851852" />
         <entry key="..\:/MyApplication4/app/src/main/res/drawable/ic_icon_filter.xml" value="0.1537037037037037" />
         <entry key="..\:/MyApplication4/app/src/main/res/drawable/ic_launcher_background.xml" value="0.2101851851851852" />
         <entry key="..\:/MyApplication4/app/src/main/res/drawable/ic_logo.xml" value="0.19074074074074074" />
+        <entry key="..\:/MyApplication4/app/src/main/res/drawable/ic_mail_icon.xml" value="0.10648148148148148" />
+        <entry key="..\:/MyApplication4/app/src/main/res/drawable/ic_map_location.xml" value="0.10648148148148148" />
+        <entry key="..\:/MyApplication4/app/src/main/res/drawable/ic_mdi_bulletin_board.xml" value="0.10648148148148148" />
+        <entry key="..\:/MyApplication4/app/src/main/res/drawable/ic_mordar_board.xml" value="0.10648148148148148" />
         <entry key="..\:/MyApplication4/app/src/main/res/drawable/ic_notifications_black_24dp.xml" value="0.2101851851851852" />
         <entry key="..\:/MyApplication4/app/src/main/res/drawable/my_gradient.xml" value="0.2101851851851852" />
         <entry key="..\:/MyApplication4/app/src/main/res/drawable/progress_bar.xml" value="0.19166666666666668" />
         <entry key="..\:/MyApplication4/app/src/main/res/drawable/text_bg_chip.xml" value="0.14074074074074075" />
-        <entry key="..\:/MyApplication4/app/src/main/res/layout/activity_auth.xml" value="0.13020833333333334" />
+        <entry key="..\:/MyApplication4/app/src/main/res/layout/activity_auth.xml" value="0.4" />
         <entry key="..\:/MyApplication4/app/src/main/res/layout/activity_main.xml" value="0.264" />
-        <entry key="..\:/MyApplication4/app/src/main/res/layout/activity_register.xml" value="0.152" />
+        <entry key="..\:/MyApplication4/app/src/main/res/layout/activity_register.xml" value="0.2" />
         <entry key="..\:/MyApplication4/app/src/main/res/layout/activity_teacher.xml" value="0.23615160349854228" />
-        <entry key="..\:/MyApplication4/app/src/main/res/layout/cardview_layout.xml" value="0.536" />
+        <entry key="..\:/MyApplication4/app/src/main/res/layout/cardview_layout.xml" value="0.264" />
         <entry key="..\:/MyApplication4/app/src/main/res/layout/content_main.xml" value="0.13020833333333334" />
-        <entry key="..\:/MyApplication4/app/src/main/res/layout/fragment_dashboard.xml" value="0.3427362482369535" />
-        <entry key="..\:/MyApplication4/app/src/main/res/layout/fragment_filter.xml" value="0.16799999999999998" />
+        <entry key="..\:/MyApplication4/app/src/main/res/layout/fragment_create_ad.xml" value="0.16423357664233576" />
+        <entry key="..\:/MyApplication4/app/src/main/res/layout/fragment_dashboard.xml" value="0.264" />
+        <entry key="..\:/MyApplication4/app/src/main/res/layout/fragment_filter.xml" value="0.17928286852589642" />
         <entry key="..\:/MyApplication4/app/src/main/res/layout/fragment_home.xml" value="0.1" />
         <entry key="..\:/MyApplication4/app/src/main/res/layout/fragment_list.xml" value="0.1" />
         <entry key="..\:/MyApplication4/app/src/main/res/layout/fragment_notifications.xml" value="0.25416666666666665" />
