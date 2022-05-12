@@ -30,7 +30,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.PersonView
 
         holder.name.setText(reviews.get(position).getName());
         holder.commentary.setText(reviews.get(position).getCommentary());
-        holder.ratingBar.setRating(reviews.get(position).getRating());
+        holder.ratingBar.setRating((float) reviews.get(position).getRating());
 
     }
 

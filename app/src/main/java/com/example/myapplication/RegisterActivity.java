@@ -3,11 +3,14 @@ package com.example.myapplication;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.ColorStateList;
 import android.database.CursorJoiner;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -18,6 +21,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -49,6 +53,8 @@ import java.util.Objects;
 import java.util.UUID;
 
 public class RegisterActivity extends AppCompatActivity {
+    final FragmentManager fm = getSupportFragmentManager();
+    ListFragment fragment=new ListFragment();
     private FirebaseAuth mAuth;
     FirebaseStorage storage;
     StorageReference storageReference;
@@ -56,19 +62,20 @@ public class RegisterActivity extends AppCompatActivity {
     private FirebaseAuth.AuthStateListener mAuthListener;
     private final int PICK_IMAGE_REQUEST = 71;
     private Uri filePath=null;
-    TextView choose_img;
     Button register;
     EditText login;
     EditText password;
+    EditText password2;
     CheckBox checkBox;
     EditText phone;
     EditText name_surname;
     ChipGroup chipGroup;
     ChipGroup chipGroup_gender;
+    TextView city;
     SharedPreferences sharedPreferences;
     ArrayList<Person> list=new ArrayList<>();
     Gson gson=new Gson();
-    boolean flag=false;
+    boolean flag_passwords=false;
     private static final String SHARED_PREF_NAME ="my_shared_preff";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,18 +102,46 @@ public class RegisterActivity extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         login=(EditText) findViewById(R.id.login2);
         password=(EditText) findViewById(R.id.password2);
+        password2=(EditText) findViewById(R.id.password);
+        password2.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                    password2.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.red)));
+                    password.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.red)));
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if(password2.getText().toString().equals(password.getText().toString())){
+                    password2.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.green)));
+                    password.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.green)));
+                    flag_passwords=true;
+                }
+
+            }
+        });
+        city=(TextView)findViewById(R.id.location_filter2);
+        city.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Bundle bundle=new Bundle();
+                bundle.putInt("selected",2);
+                bundle.putInt("flag_fragment",4);
+                fragment.setArguments(bundle);
+                register.setVisibility(View.GONE);
+                fm.beginTransaction().add(R.id.city_register_fragment,fragment).commit();
+            }
+        });
         register=(Button) findViewById(R.id.button3);
-        choose_img=(TextView) findViewById(R.id.chooseimg);
         name_surname=(EditText) findViewById(R.id.name_surname);
         phone=(EditText)findViewById(R.id.editTextPhone);
         chipGroup=(ChipGroup) findViewById(R.id.chipGroup3);
         chipGroup_gender=(ChipGroup)findViewById(R.id.chipGroup5);
-        choose_img.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                chooseImage();
-            }
-        });
         checkBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -153,9 +188,9 @@ public class RegisterActivity extends AppCompatActivity {
                 if(task.isSuccessful())
                 {
                     Toast.makeText(RegisterActivity.this, "Регистрация успешна", Toast.LENGTH_SHORT).show();
-                    uploadImage();
                     signin(email,password);
                     FirebaseAuth.getInstance().signOut();
+                    startActivity(new Intent(RegisterActivity.this,AuthActivity.class));
                 }
                 else
                     Toast.makeText(RegisterActivity.this, "Регистрация провалена", Toast.LENGTH_SHORT).show();
@@ -168,12 +203,7 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()) {
-                    if(filePath!=null){
-                        image_uri="gs://find-teacher-a7f26.appspot.com/avatars/"+mAuth.getCurrentUser().getUid();
-                    }
-                    else{
-                        image_uri="none";
-                    }
+                    image_uri="none";
                     List<String> documents=new ArrayList<>();
                     FirebaseDatabase db = FirebaseDatabase.getInstance("https://find-teacher-a7f26-default-rtdb.firebaseio.com");
                     Chip selected_gender =(Chip)findViewById(chipGroup_gender.getCheckedChipId());
@@ -181,11 +211,11 @@ public class RegisterActivity extends AppCompatActivity {
                     if(checkBox.isChecked()){
                         Chip selected_status_tutor=(Chip)findViewById(chipGroup.getCheckedChipId());
                         user=new User(Objects.requireNonNull(mAuth.getCurrentUser()).getEmail(),name_surname.getText().toString()
-                                ,selected_gender.getText().toString(),image_uri,0,"Челябинск",1,documents,selected_status_tutor.getText().toString(),phone.getText().toString());
+                                ,selected_gender.getText().toString(),image_uri,0,city.getText().toString(),1,documents,selected_status_tutor.getText().toString(),phone.getText().toString(),mAuth.getCurrentUser().getUid());
                     }
                     else{
                         user=new User(Objects.requireNonNull(mAuth.getCurrentUser()).getEmail(),name_surname.getText().toString()
-                                ,selected_gender.getText().toString(),image_uri,0,"Челябинск",0,null,null,phone.getText().toString());
+                                ,selected_gender.getText().toString(),image_uri,0,city.getText().toString(),0,null,null,phone.getText().toString(),mAuth.getCurrentUser().getUid());
 
                     }
                     DatabaseReference myRef = db.getReference("users");
@@ -201,65 +231,15 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
     }
-    private void chooseImage() {
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
-    }
     private boolean checkFields(){
         return !login.getText().toString().equals("")
                 && !password.getText().toString().equals("")
                 && !name_surname.getText().toString().equals("")
-                && !phone.getText().toString().equals("");
+                && !phone.getText().toString().equals("") && flag_passwords && !city.getText().toString().equals("Выберите город");
 
     }
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK
-                && data != null && data.getData() != null )
-        {
-            filePath = data.getData();
-            choose_img.setText(filePath.toString());
-        }
-    }
-    private void uploadImage() {
-
-        if(filePath != null)
-        {
-            final ProgressDialog progressDialog = new ProgressDialog(this);
-            progressDialog.setTitle("Uploading...");
-            progressDialog.show();
-            StorageReference ref = storageReference.child("avatars/"+ Objects.requireNonNull(mAuth.getCurrentUser()).getUid().toString());
-            ref.putFile(filePath)
-                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            progressDialog.dismiss();
-                            Toast.makeText(RegisterActivity.this, "Uploaded", Toast.LENGTH_SHORT).show();
-
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            progressDialog.dismiss();
-                            Toast.makeText(RegisterActivity.this, "Failed "+e.getMessage(), Toast.LENGTH_SHORT).show();
-                        }
-                    })
-                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                            double progress = (100.0*taskSnapshot.getBytesTransferred()/taskSnapshot
-                                    .getTotalByteCount());
-                            progressDialog.setMessage("Uploaded "+(int)progress+"%");
-                        }
-                    });
-
-
-
-        }
-
+    public void setCity(String item){
+        register.setVisibility(View.VISIBLE);
+        city.setText(item);
     }
 }

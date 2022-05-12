@@ -140,7 +140,7 @@
                     android:layout_height="wrap_content"
                     android:checkable="true"
                     android:fontFamily="@font/rubik_regular"
-                    android:text="Дистанционно"
+                    android:text="Дистант"
                     android:textSize="16sp"
                     app:checkedIconEnabled="false"
                     app:chipCornerRadius="0dp" />
@@ -418,6 +418,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
+                android:layout_marginTop="27dp"
                 android:fontFamily="@font/rubik_medium"
                 android:text="Дополнительно"
                 android:textColor="@color/black"
@@ -477,6 +478,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/chipGroup4" />
 
             <com.google.android.material.chip.ChipGroup
+                android:id="@+id/gender_chipg"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"

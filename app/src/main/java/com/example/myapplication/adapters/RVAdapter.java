@@ -20,13 +20,20 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.myapplication.R;
 import com.example.myapplication.models.Advertisement;
 import com.example.myapplication.TeacherActivity;
+import com.example.myapplication.models.User;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.gson.Gson;
 
 import java.util.List;
+import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -44,31 +51,47 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.PersonViewHolder>{
     @Override
     public void onBindViewHolder(@NonNull PersonViewHolder holder, int i) {
         mAuth=FirebaseAuth.getInstance();
-        holder.name.setText(advertisements.get(i).getUser().getName());
-        holder.city.setText(advertisements.get(i).getUser().getCity());
-        if(!advertisements.get(i).getUser().getPhoto().equals("none")){
-            FirebaseStorage storage = FirebaseStorage.getInstance();
-            StorageReference storageRef = storage.getReferenceFromUrl(advertisements.get((i)).getUser().getPhoto());
-            storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                @Override
-                public void onSuccess(Uri uri) {
-                    Glide.with(holder.itemView).load(uri).
-                            thumbnail( 0.5f )
-                            .override( 200, 200 )
-                            .placeholder(R.drawable.ic_avatar)
-                            .diskCacheStrategy( DiskCacheStrategy.ALL )
-                            .fitCenter()
-                            .priority(Priority.IMMEDIATE)
-                            .into(holder.photo);
+        FirebaseDatabase db = FirebaseDatabase.getInstance("https://find-teacher-a7f26-default-rtdb.firebaseio.com");
+        DatabaseReference ref = db.getReference("users")
+                .child(advertisements.get(i).getUid());
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                User user=dataSnapshot.getValue(User.class);
+                holder.name.setText(Objects.requireNonNull(user).getName());
+                holder.city.setText(user.getCity());
+                if(!user.getPhoto().equals("none")){
+                    FirebaseStorage storage = FirebaseStorage.getInstance();
+                    StorageReference storageRef = storage.getReferenceFromUrl(user.getPhoto());
+                    storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            Glide.with(holder.itemView).load(uri).
+                                    thumbnail( 0.5f )
+                                    .override( 200, 200 )
+                                    .placeholder(R.drawable.ic_avatar)
+                                    .diskCacheStrategy( DiskCacheStrategy.ALL )
+                                    .fitCenter()
+                                    .priority(Priority.IMMEDIATE)
+                                    .into(holder.photo);
+                        }
+                    });
                 }
-            });
-        }
+
+                holder.ratingBar.setRating((float) user.getRating());
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
         holder.format.setText(advertisements.get(i).getFormat());
         holder.price.setText(String.valueOf(advertisements.get(i).getPrice()));
         holder.subject.setText(advertisements.get(i).getSubject());
-        holder.ratingBar.setRating((float) advertisements.get(i).getUser().getRating());
-        Advertisement advertisement =new Advertisement(advertisements.get(i).getUser(),advertisements.get(i).getWhere_educate(),
-                advertisements.get(i).getSubject(),advertisements.get(i).getPrice(),advertisements.get(i).getFormat());
+        Advertisement advertisement =new Advertisement(advertisements.get(i).getUid(),
+                advertisements.get(i).getSubject(),advertisements.get(i).getPrice(),advertisements.get(i).getFormat(),advertisements.get(i).getAdditionally(),advertisements.get(i).getType_students());
         Gson gson=new Gson();
         String json=gson.toJson(advertisement);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -76,9 +99,11 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.PersonViewHolder>{
             public void onClick(View view) {
                 Intent intent=new Intent(context, TeacherActivity.class);
                 intent.putExtra("advertisement",json);
+                intent.putExtra("id",advertisement.getUid());
                 context.startActivity(intent);
             }
         });
+
     }
 
     @Override
@@ -115,5 +140,10 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.PersonViewHolder>{
     public RVAdapter(List<Advertisement> advertisements, Context context){
         this.advertisements = advertisements;
         this.context=context;
+    }
+    public void clear() {
+        int size = advertisements.size();
+        advertisements.clear();
+        notifyItemRangeRemoved(0, size);
     }
 }

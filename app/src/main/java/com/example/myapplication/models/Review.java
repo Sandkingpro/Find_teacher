@@ -9,6 +9,7 @@ public class Review {
         this.commentary=commentary;
         this.rating=rating;
     }
+    public Review(){}
     public String getName(){
         return name;
     }
@@ -18,4 +19,6 @@ public class Review {
     public int getRating(){
         return  rating;
     }
+
+
 }

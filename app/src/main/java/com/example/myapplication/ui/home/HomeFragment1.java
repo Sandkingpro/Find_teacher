@@ -37,9 +37,10 @@ import java.util.Objects;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class HomeFragment1 extends Fragment {
-    private List<Advertisement> advertisements;
+    public List<Advertisement> advertisements;
     private HomeViewModel homeViewModel;
     public View root;
+    RVAdapter adapter;
     int currentVisiblePosition = 0;
     private RecyclerView rv;
     private FloatingActionButton floatingActionButton;
@@ -90,16 +91,16 @@ public class HomeFragment1 extends Fragment {
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                advertisements.clear();
+                List<Advertisement> advertisements=new ArrayList<>();
                 Advertisement advertisement=new Advertisement();
                 for (DataSnapshot childDataSnapshot : dataSnapshot.getChildren()) {
                     advertisement=childDataSnapshot.getValue(Advertisement.class);
                     advertisements.add(advertisement);
                 }
+                adapter = new RVAdapter(advertisements,getContext());
+                rv.setAdapter(adapter);
                 pDialog.dismiss();
                 pDialog.dismissWithAnimation();
-                RVAdapter adapter = new RVAdapter(advertisements,getContext());
-                rv.setAdapter(adapter);
             }
 
             @Override
@@ -115,5 +116,11 @@ public class HomeFragment1 extends Fragment {
             getParentFragmentManager().beginTransaction().add(R.id.filter_frame,new FilterFragment()).commit();
         }
     };
+    public void setFilter(List<Advertisement> filter_advertisements){
+        advertisements=filter_advertisements;
+        RVAdapter adapter = new RVAdapter(advertisements,getContext());
+        rv.setAdapter(adapter);
+        floatingActionButton.setVisibility(View.VISIBLE);
+    }
 
 }

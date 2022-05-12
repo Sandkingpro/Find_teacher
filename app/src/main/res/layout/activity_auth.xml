@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="164dp"
         android:fontFamily="@font/rubik_semibold"
-        android:text="Find teacher"
+        android:text="@string/app_name"
         android:textColor="@color/white"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"

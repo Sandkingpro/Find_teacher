@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Find teacher</string>
+    <string name="app_name">Find tutor</string>
     <string name="title_home">Объявления</string>
     <string name="title_dashboard">Личный кабинет</string>
     <string name="title_notifications">Notifications</string>

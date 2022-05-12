@@ -28,6 +28,10 @@ public class ListFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    FilterFragment filterFragment;
+    CreateAdFragment createAdFragment;
+    EditProfileFragment editProfileFragment;
+    int flag_fragment;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -76,13 +80,36 @@ public class ListFragment extends Fragment {
             elements=Arrays.asList(getResources().getStringArray(R.array.cities));
 
         }
+        flag_fragment=bundle.getInt("flag_fragment");
         // Inflate the layout for this fragment
         View view=inflater.inflate(R.layout.fragment_list, container, false);
         RecyclerView rv=(RecyclerView) view.findViewById(R.id.list);
         RecyclerView.LayoutManager llm = new LinearLayoutManager(getContext());
         rv.setLayoutManager(llm);
-        FilterListAdapter adapter=new FilterListAdapter(elements,getContext());
+        FilterListAdapter adapter=new FilterListAdapter(elements,getContext(), this);
         rv.setAdapter(adapter);
         return view;
+    }
+    public void getItem(String _item){
+        filterFragment= (FilterFragment) this.getParentFragmentManager().findFragmentById(R.id.filter_frame);
+        createAdFragment= (CreateAdFragment) this.getParentFragmentManager().findFragmentById(R.id.create_ad_fragment);
+        editProfileFragment=(EditProfileFragment) this.getParentFragmentManager().findFragmentById(R.id.edit_fragment);
+        if(filterFragment!=null && flag_fragment==2){
+            Objects.requireNonNull(filterFragment).setItem(_item);
+        }
+        if(createAdFragment!=null && flag_fragment==1){
+            Objects.requireNonNull(createAdFragment).setItem(_item);
+        }
+        if(editProfileFragment!=null && flag_fragment==3){
+            editProfileFragment.setItem(_item);
+            editProfileFragment.getView().findViewById(R.id.edit_profile_button).setVisibility(View.VISIBLE);
+        }
+        if(flag_fragment==4){
+            RegisterActivity activity= (RegisterActivity) getActivity();
+            if(activity!=null){
+                activity.setCity(_item);
+            }
+        }
+
     }
 }
