@@ -10,10 +10,13 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -22,6 +25,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.example.myapplication.adapters.CertificateAdapter;
 import com.example.myapplication.models.User;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -38,6 +42,8 @@ import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
@@ -69,8 +75,13 @@ public class EditProfileFragment extends Fragment {
     User new_user=new User();
     Button edit_avatar;
     Button edit_profile;
+    Button edit_docs;
+    RecyclerView recyclerView;
     private final int PICK_IMAGE_REQUEST = 71;
+    private final int PICK_CERTIFICATE_REQUEST = 75;
     private Uri filePath=null;
+    private Uri file_doc_Path=null;
+    List<String> documents=new ArrayList<>();
     public EditProfileFragment() {
         // Required empty public constructor
     }
@@ -108,6 +119,7 @@ public class EditProfileFragment extends Fragment {
         mAuth= FirebaseAuth.getInstance();
         db = FirebaseDatabase.getInstance("https://find-teacher-a7f26-default-rtdb.firebaseio.com");
         View root=inflater.inflate(R.layout.fragment_edit_profile, container, false);
+        edit_docs=(Button)root.findViewById(R.id.edit_docs);
         status_teacher=(ChipGroup) root.findViewById(R.id.chipGroup3);
         title_status=(TextView)root.findViewById(R.id.textView29);
         avatar=root.findViewById(R.id.imageView10);
@@ -115,6 +127,9 @@ public class EditProfileFragment extends Fragment {
         city=(TextView)root.findViewById(R.id.edit_city);
         about_me=(EditText)root.findViewById(R.id.edit_about_me);
         edit_profile=(Button)root.findViewById(R.id.edit_profile_button);
+        recyclerView=(RecyclerView) root.findViewById(R.id.documents_rv);
+        RecyclerView.LayoutManager llm = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(llm);
         bundle=this.getArguments();
         checkType();
         getSettings();
@@ -122,6 +137,12 @@ public class EditProfileFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 chooseImage();
+            }
+        });
+        edit_docs.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                chooseCertificate();
             }
         });
         city.setOnClickListener(new View.OnClickListener() {
@@ -157,6 +178,12 @@ public class EditProfileFragment extends Fragment {
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
     }
+    private void chooseCertificate() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_CERTIFICATE_REQUEST);
+    }
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -168,6 +195,15 @@ public class EditProfileFragment extends Fragment {
                 avatar.setImageURI(filePath);
             }
 
+        }
+        if(requestCode==PICK_CERTIFICATE_REQUEST && resultCode==getActivity().RESULT_OK && data != null && data.getData() != null)
+        {
+            file_doc_Path=data.getData();
+            if(file_doc_Path!=null){
+                documents.add(file_doc_Path.toString());
+                CertificateAdapter adapter=new CertificateAdapter(documents,getContext());
+                recyclerView.setAdapter(adapter);
+            }
         }
     }
     private void getSettings(){
@@ -225,6 +261,12 @@ public class EditProfileFragment extends Fragment {
                         chip4.setChecked(true);
                     }
                 }
+                if(dataSnapshot.hasChild("documents")){
+                    documents=user.getDocuments();
+                    CertificateAdapter adapter=new CertificateAdapter(documents,getContext());
+                    recyclerView.setAdapter(adapter);
+
+                }
                 pDialog.dismiss();
                 pDialog.dismissWithAnimation();
             }
@@ -256,7 +298,6 @@ public class EditProfileFragment extends Fragment {
                         user.setAbout_me(about_me.getText().toString());
                     }
                 }
-                uploadImage();
                 if(filePath!=null){
                     user.setPhoto("gs://find-teacher-a7f26.appspot.com/avatars/"+mAuth.getCurrentUser().getUid());
                 }
@@ -266,11 +307,18 @@ public class EditProfileFragment extends Fragment {
                         user.setType_education(chip.getText().toString());
                     }
                 }
-                ref.setValue(user);
-                if(filePath==null){
-                    getParentFragmentManager().beginTransaction().remove(EditProfileFragment.this).commit();
-
+                uploadImage();
+                if(documents.size()!=0 && file_doc_Path!=null){
+                    uploadDocs();
+                    for(int i=0;i<documents.size();i++){
+                        documents.set(i,"gs://find-teacher-a7f26.appspot.com/documents/"+mAuth.getCurrentUser().getUid()+"/"+i);
+                    }
+                    user.setDocuments(documents);
                 }
+                ref.setValue(user);
+                Toast.makeText(getContext(),"Информация обновлена",Toast.LENGTH_SHORT).show();
+                file_doc_Path=null;
+                filePath=null;
 
 
             }
@@ -288,13 +336,40 @@ public class EditProfileFragment extends Fragment {
     public User newUser(User user){
         return user;
     }
+    private void uploadDocs(){
+        for(int i=0;i<documents.size();i++){
+            if(!documents.get(i).startsWith("gs")){
+                FirebaseStorage storage;
+                StorageReference storageReference;
+                storage = FirebaseStorage.getInstance();
+                storageReference = storage.getReferenceFromUrl("gs://find-teacher-a7f26.appspot.com/");
+                StorageReference ref = storageReference.child("documents/"+ Objects.requireNonNull(mAuth.getCurrentUser()).getUid()+"/"+i);
+                ref.putFile(Uri.parse(documents.get(i)))
+                        .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                Toast.makeText(getContext(),"Uploaded document",Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Toast.makeText(getContext(), "Failed "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                            }
+                        });
+            }
+
+        }
+    }
     private void uploadImage() {
 
         if(filePath != null)
         {
-            final ProgressDialog progressDialog = new ProgressDialog(getContext());
-            progressDialog.setTitle("Uploading...");
-            progressDialog.show();
             FirebaseStorage storage;
             StorageReference storageReference;
             storage = FirebaseStorage.getInstance();
@@ -304,18 +379,17 @@ public class EditProfileFragment extends Fragment {
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            progressDialog.dismiss();
-                            Toast.makeText(getContext(), "Uploaded", Toast.LENGTH_SHORT).show();
-                            getParentFragmentManager().beginTransaction().remove(EditProfileFragment.this).commit();
+                            Toast.makeText(getContext(), "Uploaded avatar", Toast.LENGTH_SHORT).show();
+                            //getParentFragmentManager().beginTransaction().remove(EditProfileFragment.this).commit();
                             MainActivity activity= (MainActivity) getActivity();
                             Objects.requireNonNull(activity).re_initialized();
+
 
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            progressDialog.dismiss();
                             Toast.makeText(getContext(), "Failed "+e.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     })
@@ -324,7 +398,6 @@ public class EditProfileFragment extends Fragment {
                         public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
                             double progress = (100.0*taskSnapshot.getBytesTransferred()/taskSnapshot
                                     .getTotalByteCount());
-                            progressDialog.setMessage("Uploaded "+(int)progress+"%");
                         }
                     });
 

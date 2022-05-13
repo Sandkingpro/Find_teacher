@@ -83,6 +83,7 @@ public class DashboardFragment extends Fragment {
     Button show_full_text;
     TextView about;
     Button edit_profile;
+    TextView count;
     boolean flag=true;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -115,6 +116,7 @@ public class DashboardFragment extends Fragment {
         about=(TextView) root.findViewById(R.id.about_information_cabinet);
         show_full_text=(Button) root.findViewById(R.id.hide_show_text);
         edit_profile=(Button)root.findViewById(R.id.edit_profile);
+        count=(TextView)root.findViewById(R.id.count_reviews);
         getCurrentUser_info();
         return root;
     }
@@ -246,28 +248,37 @@ public class DashboardFragment extends Fragment {
                 if(flag){
                     type_education.setText(user.getType_education());
                     ratingBar.setRating((float) user.getRating());
-                    adapter = new SliderAdapter(getContext());
-                    List<SliderItem> sliderItemList=new ArrayList<>();
-                    SliderItem item=new SliderItem();
-                    item.setImageUrl("https://img-fotki.yandex.ru/get/6702/62614826.19/0_16fe2f_458d97d8_orig.jpg");
-                    SliderItem item2=new SliderItem();
-                    item2.setImageUrl("https://easyen.ru/_ph/8/42976292.jpg");
-                    sliderItemList.add(item);
-                    sliderItemList.add(item2);
-                    adapter.renewItems(sliderItemList);
-                    sliderView.setSliderAdapter(adapter);
-                    sliderView.setIndicatorAnimation(IndicatorAnimationType.WORM); //set indicator animation by using SliderLayout.IndicatorAnimations. :WORM or THIN_WORM or COLOR or DROP or FILL or NONE or SCALE or SCALE_DOWN or SLIDE and SWAP!!
-                    sliderView.setSliderTransformAnimation(SliderAnimations.SIMPLETRANSFORMATION);
-                    sliderView.setIndicatorSelectedColor(Color.WHITE);
-                    sliderView.setIndicatorUnselectedColor(Color.GRAY);
-                    sliderView.setScrollTimeInSec(600);
+                    if(user.getDocuments()!=null){
+                        List<String> documents=user.getDocuments();
+                        adapter = new SliderAdapter(getContext());
+                        List<SliderItem> sliderItemList=new ArrayList<>();
+                        for(int i=0;i<documents.size();i++){
+                            SliderItem item=new SliderItem();
+                            item.setImageUrl(documents.get(i));
+                            sliderItemList.add(item);
+                            adapter.renewItems(sliderItemList);
+                            sliderView.setSliderAdapter(adapter);
+                            sliderView.setIndicatorAnimation(IndicatorAnimationType.WORM); //set indicator animation by using SliderLayout.IndicatorAnimations. :WORM or THIN_WORM or COLOR or DROP or FILL or NONE or SCALE or SCALE_DOWN or SLIDE and SWAP!!
+                            sliderView.setSliderTransformAnimation(SliderAnimations.SIMPLETRANSFORMATION);
+                            sliderView.setIndicatorSelectedColor(Color.WHITE);
+                            sliderView.setIndicatorUnselectedColor(Color.GRAY);
+                            sliderView.setScrollTimeInSec(600);
+                        }
+                    }
                     reviews=initializeData(user);
+                    if(reviews==null){
+                        count.setText("(0)");
+                    }
+                    else{
+                        count.setText("("+String.valueOf(reviews.size())+")");
+                    }
                     Collections.sort(reviews, new Comparator<Review>() {
                         @Override
                         public int compare(Review review, Review t1) {
                             return review.getCommentary().compareTo(t1.getCommentary());
                         }
                     });
+
                     RecyclerView.LayoutManager llm = new LinearLayoutManager(getContext());
                     rv.setLayoutManager(llm);
                     if(reviews.size()>2){

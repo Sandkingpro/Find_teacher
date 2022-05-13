@@ -92,4 +92,5 @@ public class User {
         this.photo=photo;
     }
     public void setType_education(String type_education){this.type_education=type_education;}
+    public void setDocuments(List<String> documents){this.documents=documents;}
 }
