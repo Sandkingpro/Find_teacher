@@ -29,9 +29,11 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.myapplication.adapters.ReviewAdapter;
+import com.example.myapplication.adapters.SliderAdapter;
 import com.example.myapplication.adapters.TypeStudentAdapter;
 import com.example.myapplication.models.Advertisement;
 import com.example.myapplication.models.Review;
+import com.example.myapplication.models.SliderItem;
 import com.example.myapplication.models.User;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.appbar.AppBarLayout;
@@ -45,6 +47,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType;
+import com.smarteist.autoimageslider.SliderAnimations;
+import com.smarteist.autoimageslider.SliderView;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -71,12 +76,14 @@ public class TeacherActivity extends AppCompatActivity {
     TextView subject;
     TextView price;
     TextView format_ad;
+    TextView title_review;
     TextView about;
     Button make_rev;
     Button hide_show_rev;
     ImageButton call_button;
     RecyclerView rv_type_st;
     RecyclerView rv;
+    SliderView sliderView;
     String Uid;
     FirebaseDatabase db;
     DatabaseReference ref;
@@ -107,6 +114,7 @@ public class TeacherActivity extends AppCompatActivity {
         ref_current_user=db.getReference("users").child(Objects.requireNonNull(mAuth.getCurrentUser()).getUid());
         checkTypeAccount();
         toolbarLayout=(CollapsingToolbarLayout)findViewById(R.id.collaps);
+        sliderView=(SliderView)findViewById(R.id.imageSlider);
         name=(TextView)findViewById(R.id.name_teacher);
         type_education=(TextView)findViewById(R.id.type_education_teacher);
         city=(TextView)findViewById(R.id.city_teacher);
@@ -114,6 +122,7 @@ public class TeacherActivity extends AppCompatActivity {
         ratingBar=(RatingBar)findViewById(R.id.ratingBar2);
         email=(TextView) findViewById(R.id.e_mail) ;
         phone=(TextView)findViewById(R.id.phone_number);
+        title_review=(TextView)findViewById(R.id.textView18);
         subject=(TextView)findViewById(R.id.subject_current_ad);
         price=(TextView)findViewById(R.id.price_ad);
         make_rev=(Button)findViewById(R.id.make_review);
@@ -236,7 +245,32 @@ public class TeacherActivity extends AppCompatActivity {
                         }
                     });
                 }
+                if(user.getDocuments()!=null){
+                    List<String> documents=user.getDocuments();
+                    SliderAdapter adapter = new SliderAdapter(getBaseContext());
+                    List<SliderItem> sliderItemList=new ArrayList<>();
+                    for(int i=0;i<documents.size();i++){
+                        SliderItem item=new SliderItem();
+                        item.setImageUrl(documents.get(i));
+                        sliderItemList.add(item);
+                        adapter.renewItems(sliderItemList);
+                        sliderView.setSliderAdapter(adapter);
+                        sliderView.setIndicatorAnimation(IndicatorAnimationType.WORM); //set indicator animation by using SliderLayout.IndicatorAnimations. :WORM or THIN_WORM or COLOR or DROP or FILL or NONE or SCALE or SCALE_DOWN or SLIDE and SWAP!!
+                        sliderView.setSliderTransformAnimation(SliderAnimations.SIMPLETRANSFORMATION);
+                        sliderView.setIndicatorSelectedColor(Color.WHITE);
+                        sliderView.setIndicatorUnselectedColor(Color.GRAY);
+                        sliderView.setScrollTimeInSec(600);
+                    }
+                }
                 reviewList=user.getReviews();
+                if(reviewList!=null){
+                    String text="Отзывы "+"("+String.valueOf(reviewList.size())+")";
+                    title_review.setText(text);
+                }
+                else{
+                    String text="Отзывы (0)";
+                    title_review.setText(text);
+                }
                 Collections.sort(reviewList, new Comparator<Review>() {
                     @Override
                     public int compare(Review review, Review t1) {

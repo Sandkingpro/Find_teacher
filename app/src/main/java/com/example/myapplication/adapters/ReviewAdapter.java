@@ -29,7 +29,13 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.PersonView
     public void onBindViewHolder(@NonNull ReviewAdapter.PersonViewHolder holder, int position) {
 
         holder.name.setText(reviews.get(position).getName());
-        holder.commentary.setText(reviews.get(position).getCommentary());
+        if(holder.commentary.getText().toString().equals("")){
+            holder.commentary.setVisibility(View.GONE);
+        }
+        else{
+            holder.commentary.setText(reviews.get(position).getCommentary());
+        }
+
         holder.ratingBar.setRating((float) reviews.get(position).getRating());
 
     }
