@@ -27,7 +27,7 @@
         <entry key="..\:/MyApplication4/app/src/main/res/drawable/my_gradient.xml" value="0.2101851851851852" />
         <entry key="..\:/MyApplication4/app/src/main/res/drawable/progress_bar.xml" value="0.19166666666666668" />
         <entry key="..\:/MyApplication4/app/src/main/res/drawable/text_bg_chip.xml" value="0.14074074074074075" />
-        <entry key="..\:/MyApplication4/app/src/main/res/layout/activity_auth.xml" value="0.4" />
+        <entry key="..\:/MyApplication4/app/src/main/res/layout/activity_auth.xml" value="0.264" />
         <entry key="..\:/MyApplication4/app/src/main/res/layout/activity_main.xml" value="0.264" />
         <entry key="..\:/MyApplication4/app/src/main/res/layout/activity_register.xml" value="0.264" />
         <entry key="..\:/MyApplication4/app/src/main/res/layout/activity_teacher.xml" value="0.2" />
@@ -42,6 +42,7 @@
         <entry key="..\:/MyApplication4/app/src/main/res/layout/fragment_list.xml" value="0.1" />
         <entry key="..\:/MyApplication4/app/src/main/res/layout/fragment_make_review.xml" value="0.25416666666666665" />
         <entry key="..\:/MyApplication4/app/src/main/res/layout/fragment_notifications.xml" value="0.25416666666666665" />
+        <entry key="..\:/MyApplication4/app/src/main/res/layout/fragment_recover_password.xml" value="0.25416666666666665" />
         <entry key="..\:/MyApplication4/app/src/main/res/layout/image_slider_layout_item.xml" value="0.25416666666666665" />
         <entry key="..\:/MyApplication4/app/src/main/res/layout/item_filter_list.xml" value="0.2" />
         <entry key="..\:/MyApplication4/app/src/main/res/layout/layout.xml" value="0.1" />

@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -30,11 +31,13 @@ import java.lang.reflect.Type;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class AuthActivity extends AppCompatActivity {
     TextView register;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
+    Button recover_password;
     Button auth;
     EditText login;
     EditText password;
@@ -76,7 +79,15 @@ public class AuthActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        finishAffinity();
+        if(getSupportFragmentManager().findFragmentById(R.id.recover_password_container)!=null){
+            getSupportFragmentManager().beginTransaction().remove(Objects.requireNonNull(getSupportFragmentManager().findFragmentById(R.id.recover_password_container))).commit();
+            auth.setVisibility(View.VISIBLE);
+            recover_password.setVisibility(View.VISIBLE);
+        }
+        else{
+            finishAffinity();
+        }
+
     }
     public void isInternetAvailable() {
         if(isNetworkConnected()){
@@ -89,6 +100,7 @@ public class AuthActivity extends AppCompatActivity {
             login=(EditText) findViewById(R.id.login1);
             password=(EditText)findViewById(R.id.password1);
             register=(TextView) findViewById(R.id.textView2);
+            recover_password=(Button)findViewById(R.id.recover_password_button);
             auth=(Button) findViewById(R.id.button);
             ActivityResultLauncher<Intent> mStartForResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
                     result -> {
@@ -100,6 +112,14 @@ public class AuthActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     mStartForResult.launch(new Intent(AuthActivity.this,RegisterActivity.class));
+                }
+            });
+            recover_password.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    getSupportFragmentManager().beginTransaction().add(R.id.recover_password_container,new RecoverPasswordFragment()).commit();
+                    auth.setVisibility(View.GONE);
+                    recover_password.setVisibility(View.GONE);
                 }
             });
             auth.setOnClickListener(new View.OnClickListener() {

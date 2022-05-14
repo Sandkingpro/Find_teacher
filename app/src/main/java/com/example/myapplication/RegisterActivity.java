@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Patterns;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -160,9 +161,15 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(checkFields()){
-                    registration(login.getText().toString(),password.getText().toString());
-                    login.setText("");
-                    password.setText("");
+                    if(Patterns.EMAIL_ADDRESS.matcher(login.getText().toString()).matches()){
+                        registration(login.getText().toString(),password.getText().toString());
+                        login.setText("");
+                        password.setText("");
+                    }
+                    else{
+                        login.setError("Введите корректную почту");
+                    }
+
                 }
                 else{
                     Toast.makeText(RegisterActivity.this,"Вы не заполнили необходимые поля",Toast.LENGTH_SHORT).show();
