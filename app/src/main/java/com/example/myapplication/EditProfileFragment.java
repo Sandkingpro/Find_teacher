@@ -76,6 +76,7 @@ public class EditProfileFragment extends Fragment {
     Button edit_avatar;
     Button edit_profile;
     Button edit_docs;
+    TextView edit_docs_title;
     RecyclerView recyclerView;
     private final int PICK_IMAGE_REQUEST = 71;
     private final int PICK_CERTIFICATE_REQUEST = 75;
@@ -127,6 +128,7 @@ public class EditProfileFragment extends Fragment {
         city=(TextView)root.findViewById(R.id.edit_city);
         about_me=(EditText)root.findViewById(R.id.edit_about_me);
         edit_profile=(Button)root.findViewById(R.id.edit_profile_button);
+        edit_docs_title=(TextView)root.findViewById(R.id.textView35);
         recyclerView=(RecyclerView) root.findViewById(R.id.documents_rv);
         RecyclerView.LayoutManager llm = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(llm);
@@ -170,6 +172,10 @@ public class EditProfileFragment extends Fragment {
         if(bundle.getInt("?type")==0){
             status_teacher.setVisibility(View.GONE);
             title_status.setVisibility(View.GONE);
+            recyclerView.setVisibility(View.GONE);
+            edit_docs.setVisibility(View.GONE);
+            edit_docs_title.setVisibility(View.GONE);
+
         }
     }
     private void chooseImage() {
@@ -370,6 +376,9 @@ public class EditProfileFragment extends Fragment {
 
         if(filePath != null)
         {
+            final ProgressDialog progressDialog = new ProgressDialog(getContext());
+            progressDialog.setTitle("Uploading avatar...");
+            progressDialog.show();
             FirebaseStorage storage;
             StorageReference storageReference;
             storage = FirebaseStorage.getInstance();
@@ -379,6 +388,7 @@ public class EditProfileFragment extends Fragment {
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            progressDialog.dismiss();
                             Toast.makeText(getContext(), "Uploaded avatar", Toast.LENGTH_SHORT).show();
                             //getParentFragmentManager().beginTransaction().remove(EditProfileFragment.this).commit();
                             MainActivity activity= (MainActivity) getActivity();
@@ -390,6 +400,7 @@ public class EditProfileFragment extends Fragment {
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
+                            progressDialog.dismiss();
                             Toast.makeText(getContext(), "Failed "+e.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     })
@@ -398,6 +409,7 @@ public class EditProfileFragment extends Fragment {
                         public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
                             double progress = (100.0*taskSnapshot.getBytesTransferred()/taskSnapshot
                                     .getTotalByteCount());
+                            progressDialog.setMessage("Uploaded "+(int)progress+"%");
                         }
                     });
 
