@@ -1,6 +1,7 @@
 package com.example.myapplication;
 
 import android.app.Activity;
+import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -52,7 +53,7 @@ public class AuthActivity extends AppCompatActivity {
         setContentView(R.layout.activity_auth);
         sharedPreferences=getSharedPreferences(SHARED_PREF_NAME,MODE_PRIVATE);
         mAuth = FirebaseAuth.getInstance();
-        isInternetAvailable();
+        setListeners();
 
 
 
@@ -89,59 +90,48 @@ public class AuthActivity extends AppCompatActivity {
         }
 
     }
-    public void isInternetAvailable() {
-        if(isNetworkConnected()){
-            login=(EditText) findViewById(R.id.login1);
-            password=(EditText)findViewById(R.id.password1);
-            register=(TextView) findViewById(R.id.textView2);
-            recover_password=(Button)findViewById(R.id.recover_password_button);
-            auth=(Button) findViewById(R.id.button);
-            ActivityResultLauncher<Intent> mStartForResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
-                    result -> {
-                        if (result.getResultCode() == Activity.RESULT_OK) {
-                            Intent intent = result.getData();
-                        }
-                    });
-            register.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    mStartForResult.launch(new Intent(AuthActivity.this,RegisterActivity.class));
-                }
-            });
-            recover_password.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    getSupportFragmentManager().beginTransaction().add(R.id.recover_password_container,new RecoverPasswordFragment()).commit();
-                    auth.setVisibility(View.GONE);
-                    recover_password.setVisibility(View.GONE);
-                }
-            });
-            auth.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if(!login.getText().toString().equals("") && !password.getText().toString().equals("")){
-                        signin(login.getText().toString(),password.getText().toString());
-                        login.setText("");
-                        password.setText("");
+    public void setListeners() {
+        login=(EditText) findViewById(R.id.login1);
+        password=(EditText)findViewById(R.id.password1);
+        register=(TextView) findViewById(R.id.textView2);
+        recover_password=(Button)findViewById(R.id.recover_password_button);
+        auth=(Button) findViewById(R.id.button);
+        ActivityResultLauncher<Intent> mStartForResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        Intent intent = result.getData();
                     }
-                    else{
-                        Toast.makeText(AuthActivity.this,"Введите логин и пароль для входа",Toast.LENGTH_SHORT).show();
-                    }
-
-
-
+                });
+        register.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mStartForResult.launch(new Intent(AuthActivity.this,RegisterActivity.class));
+            }
+        });
+        recover_password.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getSupportFragmentManager().beginTransaction().add(R.id.recover_password_container,new RecoverPasswordFragment()).commit();
+                auth.setVisibility(View.GONE);
+                recover_password.setVisibility(View.GONE);
+            }
+        });
+        auth.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!login.getText().toString().equals("") && !password.getText().toString().equals("")){
+                    signin(login.getText().toString(),password.getText().toString());
+                    login.setText("");
+                    password.setText("");
                 }
-            });
-        }
-        else{
-            MyDialogFragment dialogFragment=new MyDialogFragment();
-            dialogFragment.show(getSupportFragmentManager(),"noInternet");
-        }
-    }
-    private boolean isNetworkConnected() {
-        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+                else{
+                    Toast.makeText(AuthActivity.this,"Введите логин и пароль для входа",Toast.LENGTH_SHORT).show();
+                }
 
-        return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected();
+
+
+            }
+        });
     }
 
 }
