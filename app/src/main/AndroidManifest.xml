@@ -11,9 +11,9 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_ft_logo"
+        android:icon="@mipmap/ic_splash"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_ft_logo"
+        android:roundIcon="@mipmap/ic_splash_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplication"
         tools:replace="android:icon">

@@ -3,9 +3,11 @@
         android:drawable="@color/champagne"/>
 
     <item>
+
         <bitmap
             android:gravity="center"
-            android:src="@drawable/ft_logo"/>
+            android:src="@drawable/ft_logo"
+            android:tileMode="disabled"/>
     </item>
 
 </layer-list>
