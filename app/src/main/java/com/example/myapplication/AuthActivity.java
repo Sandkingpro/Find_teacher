@@ -72,7 +72,13 @@ public class AuthActivity extends AppCompatActivity {
                     Intent intent=new Intent(AuthActivity.this,MainActivity.class);
                     startActivity(intent);
                 }else
-                    Toast.makeText(AuthActivity.this, "Неверный логин или пароль", Toast.LENGTH_SHORT).show();
+                    if(!isNetworkConnected()){
+                        Toast.makeText(AuthActivity.this, "Нет подключения к интернету", Toast.LENGTH_SHORT).show();
+                    }
+                    else{
+                        Toast.makeText(AuthActivity.this, "Неверный логин или пароль", Toast.LENGTH_SHORT).show();
+                    }
+
 
             }
         });
@@ -132,6 +138,11 @@ public class AuthActivity extends AppCompatActivity {
 
             }
         });
+    }
+    private boolean isNetworkConnected(){
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected();
     }
 
 }
