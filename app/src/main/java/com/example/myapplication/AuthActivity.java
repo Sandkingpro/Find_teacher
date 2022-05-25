@@ -91,12 +91,6 @@ public class AuthActivity extends AppCompatActivity {
     }
     public void isInternetAvailable() {
         if(isNetworkConnected()){
-            if(sharedPreferences.getString("login",null)!=null
-                    && sharedPreferences.getString("password",null)!=null){
-                String saved_email=sharedPreferences.getString("login",null);
-                String saved_password=sharedPreferences.getString("password",null);
-                signin(saved_email,saved_password);
-            }
             login=(EditText) findViewById(R.id.login1);
             password=(EditText)findViewById(R.id.password1);
             register=(TextView) findViewById(R.id.textView2);

@@ -393,8 +393,6 @@ public class EditProfileFragment extends Fragment {
                             //getParentFragmentManager().beginTransaction().remove(EditProfileFragment.this).commit();
                             MainActivity activity= (MainActivity) getActivity();
                             Objects.requireNonNull(activity).re_initialized();
-
-
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
@@ -412,9 +410,6 @@ public class EditProfileFragment extends Fragment {
                             progressDialog.setMessage("Uploaded "+(int)progress+"%");
                         }
                     });
-
-
-
         }
 
     }

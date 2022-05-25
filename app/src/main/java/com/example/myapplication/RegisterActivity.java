@@ -197,7 +197,7 @@ public class RegisterActivity extends AppCompatActivity {
                     Toast.makeText(RegisterActivity.this, "Регистрация успешна", Toast.LENGTH_SHORT).show();
                     signin(email,password);
                     FirebaseAuth.getInstance().signOut();
-                    startActivity(new Intent(RegisterActivity.this,AuthActivity.class));
+                    finish();
                 }
                 else
                     Toast.makeText(RegisterActivity.this, "Регистрация провалена", Toast.LENGTH_SHORT).show();
@@ -223,14 +223,9 @@ public class RegisterActivity extends AppCompatActivity {
                     else{
                         user=new User(Objects.requireNonNull(mAuth.getCurrentUser()).getEmail(),name_surname.getText().toString()
                                 ,selected_gender.getText().toString(),image_uri,0,city.getText().toString(),0,null,null,phone.getText().toString(),mAuth.getCurrentUser().getUid());
-
                     }
                     DatabaseReference myRef = db.getReference("users");
                     myRef.child(Objects.requireNonNull(mAuth.getCurrentUser().getUid())).setValue(user);
-
-
-
-
 
                 }else
                     Toast.makeText(RegisterActivity.this, "Aвторизация провалена", Toast.LENGTH_SHORT).show();
